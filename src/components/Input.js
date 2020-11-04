@@ -5,30 +5,38 @@ import '../css/login.css'
 
 const Input = (props) => {
     const { label, name, ...rest } = props
+    // console.log("rest value", rest.value);
     return (
-        // <div className=" d-flex align-items-center justify-content-between m-3 ">
-        <div className="row">
-            <div className='col-md-3'></div>
-            <div className='col-md-6'>
-                <div>
-                    {/* <Form className="container form-signin"> */}
-                        <div className="form-group ">
-                            <label className="form-label" >{label}: </label>
-                            <Field id={name} name={name} {...rest} 
-                             className="rounded-pill form-control formStyle" 
-                             />
-                            <ErrorMessage name="email" >
-                                {(errorMsg) => <div className="mb-2 err-color" >{errorMsg}</div>}
-                            </ErrorMessage>
-                        </div>
+        <div className="m-3 ">
+            <div className="row">
+                <div className="col-3">
 
-                        <div className="form-group text-center">
-                            <button type="submit" className="btn btn-primary rounded-pill mr-4 btn-style">Submit</button>
-                        </div>
-                    {/* </Form> */}
+                    <label className="form-label mt-2" >{label}: </label>
+                </div>
+                <div className="col-8">
+                    {!rest.value &&
+                        <Field id={name} name={name} {...rest}
+                            className="rounded-pill form-control"
+                            placeholder={rest.placeholder}
+                            type={rest.type ? rest.type : "text"}
+                        />
+                    }
+
+                    {rest.value &&
+                        <Field id={name} name={name} {...rest}
+                            className="rounded-pill form-control"
+                            placeholder={rest.placeholder}
+                            type={rest.type ? rest.type : "text"}
+                            value={rest.value || ''}
+                            onChange={rest.handlChange}
+                        />
+                    }
+
+                    <ErrorMessage name={name} >
+                        {(errorMsg) => <div className="mb-2 err-color" >{errorMsg}</div>}
+                    </ErrorMessage>
                 </div>
             </div>
-            <div className='col-md-3'></div>
         </div>
     )
 }

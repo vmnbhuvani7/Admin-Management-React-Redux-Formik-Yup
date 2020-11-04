@@ -6,18 +6,25 @@ import { ErrorMessage, Field } from 'formik'
 const RadioButton = (props) => {
     const { label, name, options, ...rest } = props
     return (
-        <div className="d-flex align-items-center justify-content-between m-3">
-            <label>{label}: </label>
-            <div>
-                <div className="d-flex">
-                    <Field name={name} {...rest} >
+        <div className="m-3 ">
+            <div className="row">
+                <div className="col-3">
+
+                    <label className="form-label mt-2" >{label}: </label>
+                </div>
+                <div className="col-8 optionStyle">
+                    <Field name={name} {...rest}
+                        className="rounded-pill form-control"
+                        placeholder={rest.placeholder}
+                        type={rest.type ? rest.type : "text"}
+                    >
                         {
                             ({ field }) => {
                                 return options.map(option => {
                                     return (
                                         <div key={option.value} >
                                             <input
-                                                className="mx-3"
+                                                className="m-1"
                                                 type='radio'
                                                 {...field}
                                                 value={option.value}
@@ -30,8 +37,10 @@ const RadioButton = (props) => {
                             }
                         }
                     </Field>
+                    <ErrorMessage name={name} >
+                        {(errorMsg) => <div className="mb-2 err-color" >{errorMsg}</div>}
+                    </ErrorMessage>
                 </div>
-                <ErrorMessage name={name}  />
             </div>
         </div>
     )

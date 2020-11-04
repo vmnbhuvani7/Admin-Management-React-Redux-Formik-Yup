@@ -5,19 +5,23 @@ import { ErrorMessage, Field } from 'formik'
 const CheckBoxGroup = (props) => {
     const { label, name, options, ...rest } = props
     return (
-        <div className="d-flex align-items-center justify-content-between m-3">
-            <label>{label}: </label>
+        <div className="m-3 ">
+            <div className="row">
+                <div className="col-3">
 
-            <div>
-                <div className="d-flex">
-                    <Field name={name} {...rest} className="styleright">
+                    <label className="form-label mt-2" >{label}: </label>
+                </div>
+                <div className="col-8 optionStyle">
+                    <Field name={name} {...rest} className="rounded-pill form-control"
+                        placeholder={rest.placeholder}
+                        type={rest.type ? rest.type : "text"}>
                         {
                             ({ field }) => {
                                 return options.map(option => {
                                     return (
                                         <div key={option.value}>
                                             <input
-                                                className="mx-3"
+                                                className="m-1"
                                                 type='checkbox'
                                                 {...field}
                                                 value={option.value}
@@ -30,8 +34,10 @@ const CheckBoxGroup = (props) => {
                             }
                         }
                     </Field>
+                    <ErrorMessage name={name} >
+                        {(errorMsg) => <div className="mb-2 err-color" >{errorMsg}</div>}
+                    </ErrorMessage>
                 </div>
-                <ErrorMessage name={name}  />
             </div>
         </div>
     )

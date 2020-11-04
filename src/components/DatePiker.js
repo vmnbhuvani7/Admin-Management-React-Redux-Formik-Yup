@@ -1,34 +1,45 @@
 import React from 'react'
 
 import { ErrorMessage, Field } from 'formik'
-// import DateView from 'react-datepicker'
-// import 'react-datepicker/dist/react-datepicker.css'
+import DateView from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 const DatePiker = (props) => {
     const { label, name, ...rest } = props
     return (
-        <div className="d-flex align-items-center justify-content-between m-3">
-            <label>{label}: </label>
-            <div >
-                <Field name={name} className="formStyle">
-                    {
-                        ({ form, field }) => {
-                            const { setFieldValue } = form
-                            const { value } = field
-                            return (
-                                // <DateView
-                                //     {...field}
-                                //     {...rest}
-                                //     className="formStyle"
-                                //     selected={value}
-                                //     onChange={val => setFieldValue(name, val)}
-                                // />
-                                <p>insert date</p>
-                            )
+        <div className="m-3 ">
+            <div className="row">
+                <div className="col-3">
+
+                    <label className="form-label mt-2" >{label}: </label>
+                </div>
+                <div className="col-8">
+                    <Field name={name} {...rest}
+                        className="rounded-pill form-control"
+                        placeholder={rest.placeholder}
+                        type={rest.type ? rest.type : "text"}
+                    >
+                        {
+                            ({ form, field }) => {
+                                const { setFieldValue } = form
+                                const { value } = field
+                                return (
+                                    <DateView
+                                        {...field}
+                                        {...rest}
+                                        className="rounded-pill form-control"
+                                        selected={value}
+                                        onChange={val => setFieldValue(name, val)}
+                                    />
+                                )
+                            }
                         }
-                    }
-                </Field>
-                <ErrorMessage name={name}  />
+                    </Field>
+
+                    <ErrorMessage name={name} >
+                        {(errorMsg) => <div className="mb-2 err-color" >{errorMsg}</div>}
+                    </ErrorMessage>
+                </div>
             </div>
         </div>
     )

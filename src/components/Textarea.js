@@ -6,11 +6,23 @@ import { ErrorMessage, Field } from 'formik'
 const Textarea = (props) => {
     const { label, name, ...rest } = props
     return (
-        <div className="d-flex align-items-center justify-content-between m-3 ">
-            <label>{label}: </label>
-            <div>
-                <Field as='textarea' name={name} {...rest} autocomplete="address" className="formStyle"/>
-                <ErrorMessage name={name}  />
+        <div className="m-3 ">
+            <div className="row">
+                <div className="col-3">
+
+                    <label className="form-label mt-2" >{label}: </label>
+                </div>
+                <div className="col-8">
+
+                    <Field as='textarea' id={name} name={name} autoComplete="address" {...rest}
+                        className="rounded-pill form-control"
+                        placeholder={rest.placeholder}
+                        type={rest.type ? rest.type : "text"}
+                    />
+                    <ErrorMessage name={name} >
+                        {(errorMsg) => <div className="mb-2 err-color" >{errorMsg}</div>}
+                    </ErrorMessage>
+                </div>
             </div>
         </div>
     )
