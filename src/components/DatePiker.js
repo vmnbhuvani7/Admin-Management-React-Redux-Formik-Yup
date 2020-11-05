@@ -2,6 +2,7 @@ import React from 'react'
 
 import { ErrorMessage, Field } from 'formik'
 import DateView from 'react-datepicker'
+
 import 'react-datepicker/dist/react-datepicker.css'
 
 const DatePiker = (props) => {
@@ -29,6 +30,7 @@ const DatePiker = (props) => {
                                         {...rest}
                                         className="rounded-pill form-control"
                                         selected={value}
+                                        value={rest.value ? rest.value : ''}
                                         onChange={val => setFieldValue(name, val)}
                                     />
                                 )

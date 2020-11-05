@@ -9,15 +9,15 @@ const CheckBoxGroup = (props) => {
             <div className="row">
                 <div className="col-3">
 
-                    <label className="form-label mt-2" >{label}: </label>
+                    <label className="form-label mt-2 " >{label}: </label>
                 </div>
-                <div className="col-8 optionStyle">
+                <div className="col-8 ">
                     <Field name={name} {...rest} className="rounded-pill form-control"
                         placeholder={rest.placeholder}
                         type={rest.type ? rest.type : "text"}>
                         {
                             ({ field }) => {
-                                return options.map(option => {
+                                return options.map((option, key) => {
                                     return (
                                         <div key={option.value}>
                                             <input
@@ -25,7 +25,8 @@ const CheckBoxGroup = (props) => {
                                                 type='checkbox'
                                                 {...field}
                                                 value={option.value}
-                                                checked={field.value.includes(option.value)}
+                                                // checked={field.value.includes(option.value)}
+                                                checked={option.value === rest.value[0] ||option.value === rest.value[1]||option.value === rest.value[2]|| field.value.includes(option.value)}
                                             />
                                             <label >{option.key}</label>
                                         </div>

@@ -2,7 +2,6 @@ import React from 'react'
 
 import { ErrorMessage, Field } from 'formik'
 
-
 const RadioButton = (props) => {
     const { label, name, options, ...rest } = props
     return (
@@ -12,7 +11,7 @@ const RadioButton = (props) => {
 
                     <label className="form-label mt-2" >{label}: </label>
                 </div>
-                <div className="col-8 optionStyle">
+                <div className="col-8 ">
                     <Field name={name} {...rest}
                         className="rounded-pill form-control"
                         placeholder={rest.placeholder}
@@ -28,7 +27,8 @@ const RadioButton = (props) => {
                                                 type='radio'
                                                 {...field}
                                                 value={option.value}
-                                                checked={field.value === option.value}
+                                                // checked={field.value === option.value }
+                                                checked={option.value === rest.value}
                                             />
                                             <label >{option.key}</label>
                                         </div>
@@ -37,10 +37,12 @@ const RadioButton = (props) => {
                             }
                         }
                     </Field>
+
                     <ErrorMessage name={name} >
                         {(errorMsg) => <div className="mb-2 err-color" >{errorMsg}</div>}
                     </ErrorMessage>
                 </div>
+
             </div>
         </div>
     )

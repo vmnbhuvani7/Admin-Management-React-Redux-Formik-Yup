@@ -1,21 +1,20 @@
 import React from 'react'
 
 import { useHistory } from 'react-router-dom';
-import '../css/login.css'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { toast } from 'react-toastify';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup'
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 import FormikControl from '../common/FormikControl';
+import '../css/login.css'
+
 const Login = () => {
     const history = useHistory();
-
     var data = {
         email: 'vaman@gmail.com',
         password: 'zxcZXC1!'
     };
     localStorage.setItem('login', JSON.stringify(data));
-
     const initialValues = {
         email: '',
         password: '',
@@ -27,7 +26,7 @@ const Login = () => {
             toast.success("Login Successfull", { position: toast.POSITION.TOP_CENTER }, { autoClose: 15000 })
             setTimeout(function () {
                 history.push({
-                    pathname: "/appdata",
+                    pathname: "/maganerlist",
                 })
             }, 2000);
         }
@@ -52,7 +51,6 @@ const Login = () => {
 
     return (
         <div>
-            <ToastContainer />
             <Formik
                 initialValues={initialValues}
                 onSubmit={onSubmit}
@@ -71,6 +69,7 @@ const Login = () => {
                                             label='Email'
                                             name='email'
                                             placeholder="Enter Email"
+                                            value={formik.values.email}
                                         />
                                         <FormikControl
                                             control='input'
@@ -78,6 +77,7 @@ const Login = () => {
                                             name='password'
                                             placeholder="Enter Password"
                                             type="password"
+                                            value={formik.values.password}
                                         />
                                         <div className="form-group text-center">
                                             <button type="submit" className="btn btn-primary rounded-pill mr-4 btn-style">Submit</button>

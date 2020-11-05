@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
-import '../css/login.css'
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup'
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import FormikControl from '../common/FormikControl';
-import '../css/login.css'
+import { toast, ToastContainer } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import { addManager } from '../action/managerAction';
-import ManagerList from './ManagerList';
 import moment from 'moment';
+
+import { addManager, updateData } from '../action/managerAction';
+import FormikControl from '../common/FormikControl';
+import ManagerList from './ManagerList';
+import '../css/login.css'
+import '../css/login.css'
+
 const AddData = (props) => {
     const dispatch = useDispatch();
     let { update } = useSelector(state => {
         return state
-    }
-    )
+    })
     const initialValues = {
         name: '',
         email: "",
@@ -26,9 +26,9 @@ const AddData = (props) => {
         hobby: '',
     }
 
-    const onSubmit = (value) => {
+    const onSubmit = (value, { resetForm }) => {
         const data = {
-            id: Math.random().toString(36).substr(2, 9),
+            id: update.length === 0 ? Math.random().toString(36).substr(2, 9) : update[0].id,
             name: value.name,
             address: value.address,
             birthdate: moment(value.birthdate).format('l'),
@@ -37,8 +37,9 @@ const AddData = (props) => {
             hobby: value.hobby,
             gender: value.gender,
         }
-        dispatch(addManager(data))
-
+        { update.length === 0 ? dispatch(addManager(data)) : dispatch(updateData(data)) }
+        toast.success("Add data Successfully", { position: toast.POSITION.TOP_CENTER }, { autoClose: 15000 })
+        resetForm({})
     }
     const validationSchema = Yup.object({
         name: Yup.string().required('Required !'),
@@ -48,7 +49,6 @@ const AddData = (props) => {
         birthdate: Yup.date().required('Required !').nullable(),
         gender: Yup.string().required('Required !'),
         hobby: Yup.array().required('Required !'),
-
     })
     const radioOptions = [
         { key: 'Male', value: 'male' },
@@ -60,16 +60,7 @@ const AddData = (props) => {
         { key: 'Game', value: 'Game' },
         { key: 'Travel', value: 'Travel' },
     ]
-    // console.log("update value", update);
-    // { update[0] && (console.log("not update", update[0].name)) }
-    const [aaa, setaaa] = useState('')
-    const handleChange = (e) => {
-        console.log("e", e.target.value);
-        setaaa(...aaa, e.target.value)
-    }
-    // useEffect({
-    //     aaa: aaa
-    // }, [aaa])
+
     return (
         <div>
             <div>
@@ -86,56 +77,101 @@ const AddData = (props) => {
                                 <div className='col-md-6'>
                                     <div>
                                         <Form className="container form-signin">
-                                            {!update[0] &&
-                                                <FormikControl
-                                                    control='input'
-                                                    label='Name'
-                                                    name='name'
-                                                    placeholder="Enter Name"
-                                                    handleChange={e=>handleChange}
-                                                />
-                                            }
-                                            {update[0] &&
-                                                <FormikControl
-                                                    control='input'
-                                                    label='Name'
-                                                    name='name'
-                                                    placeholder="Enter Name"
-                                                    // value={update[0].name }
-                                                    value={aaa ? aaa : update[0].name}
-                                                    handleChange={handleChange}
-                                                />
-                                            }
-                                            <FormikControl
-                                                control='textarea'
-                                                label='Address'
-                                                name='address'
-                                            />
-                                            <FormikControl
-                                                control='input'
-                                                label='Email'
-                                                name='email'
-                                                placeholder="Enter Email"
-                                            // value={update.email && update.email}
-                                            />
-                                            <FormikControl
-                                                control='date'
-                                                label='BirthDate'
-                                                name='birthdate'
-                                            />
-                                            <FormikControl
-                                                control='radio'
-                                                label='Gender'
-                                                name='gender'
-                                                options={radioOptions}
-                                            />
-                                            <FormikControl
-                                                control='checkbox'
-                                                label='Hobby'
-                                                name='hobby'
-                                                options={checkBoxOptions}
-                                            />
 
+                                            {update && update[0] ?
+                                                <FormikControl
+                                                    control='input'
+                                                    label='Name'
+                                                    name='name'
+                                                    placeholder="Enter Name"
+                                                    value={formik.values.name ? formik.values.name : update[0].name}
+                                                /> :
+                                                <FormikControl
+                                                    control='input'
+                                                    label='Name'
+                                                    name='name'
+                                                    placeholder="Enter Name"
+                                                    value={formik.values.name}
+                                                />
+                                            }
+
+                                            {update && update[0] ?
+                                                <FormikControl
+                                                    control='textarea'
+                                                    label='Address'
+                                                    name='address'
+                                                    value={formik.values.address ? formik.values.address : update[0].address}
+                                                /> :
+                                                <FormikControl
+                                                    control='textarea'
+                                                    label='Address'
+                                                    name='address'
+                                                    value={formik.values.address}
+                                                />
+                                            }
+
+                                            {update && update[0] ?
+                                                <FormikControl
+                                                    control='input'
+                                                    label='Email'
+                                                    name='email'
+                                                    placeholder="Enter Email"
+                                                    value={formik.values.email ? formik.values.email : update[0].email}
+                                                /> :
+                                                <FormikControl
+                                                    control='input'
+                                                    label='Email'
+                                                    name='email'
+                                                    placeholder="Enter Email"
+                                                    value={formik.values.email}
+                                                />
+                                            }
+                                            {update && update[0] ?
+                                                <FormikControl
+                                                    control='date'
+                                                    label='BirthDate'
+                                                    name='birthdate'
+                                                    value={formik.values.birthdate ? formik.values.birthdate : update[0].birthdate}
+                                                /> :
+                                                <FormikControl
+                                                    control='date'
+                                                    label='BirthDate'
+                                                    name='birthdate'
+                                                    value={formik.values.birthdate}
+                                                />
+                                            }
+                                            {update && update[0] ?
+                                                <FormikControl
+                                                    control='radio'
+                                                    label='Gender'
+                                                    name='gender'
+                                                    options={radioOptions}
+                                                    value={formik.values.gender ? formik.values.gender : update[0].gender}
+                                                /> :
+                                                <FormikControl
+                                                    control='radio'
+                                                    label='Gender'
+                                                    name='gender'
+                                                    options={radioOptions}
+                                                    value={formik.values.gender}
+                                                />
+                                            }
+                                            {update && update[0] ?
+                                                <FormikControl
+                                                    control='checkbox'
+                                                    label='Hobby'
+                                                    name='hobby'
+                                                    options={checkBoxOptions}
+                                                    value={formik.values.hobby ? formik.values.hobby : update[0].hobby}
+                                                /> :
+                                                <FormikControl
+                                                    control='checkbox'
+                                                    label='Hobby'
+                                                    name='hobby'
+                                                    options={checkBoxOptions}
+                                                    value={formik.values.hobby}
+                                                />
+                                            }
                                             <div className="form-group text-center">
                                                 <button type="submit" className="btn btn-primary rounded-pill mr-4 btn-style">Submit</button>
                                             </div>

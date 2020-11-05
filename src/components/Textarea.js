@@ -2,9 +2,8 @@ import React from 'react'
 
 import { ErrorMessage, Field } from 'formik'
 
-
 const Textarea = (props) => {
-    const { label, name, ...rest } = props
+    const { label, name, value, ...rest } = props
     return (
         <div className="m-3 ">
             <div className="row">
@@ -14,11 +13,23 @@ const Textarea = (props) => {
                 </div>
                 <div className="col-8">
 
-                    <Field as='textarea' id={name} name={name} autoComplete="address" {...rest}
-                        className="rounded-pill form-control"
-                        placeholder={rest.placeholder}
-                        type={rest.type ? rest.type : "text"}
-                    />
+                    {!value &&
+                        <Field as='textarea' id={name} name={name} autoComplete="address" {...rest}
+                            className="rounded-pill form-control"
+                            placeholder={rest.placeholder}
+                            type={rest.type ? rest.type : "text"}
+                            value={value ? value : ''}
+                        />
+                    }
+
+                    {value &&
+                        <Field as='textarea' id={name} name={name} autoComplete="address" {...rest}
+                            className="rounded-pill form-control"
+                            placeholder={rest.placeholder}
+                            type={rest.type ? rest.type : "text"}
+                            value={value}
+                        />
+                    }
                     <ErrorMessage name={name} >
                         {(errorMsg) => <div className="mb-2 err-color" >{errorMsg}</div>}
                     </ErrorMessage>

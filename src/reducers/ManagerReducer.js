@@ -1,34 +1,60 @@
-import { ADD_POST, DELETE_POST, UPDATE_POST } from "../type/postType";
+import { toast } from "react-toastify";
 
+import { ADD_POST, DELETE_POST, UPDATE_DATA, UPDATE_POST } from "../type/postType";
+
+// const initialState = {
+//     posts: [
+//         { id: 1, name: "vaman", age: 22, email: "test1@gmail.com", address: "vadodra", hobby: ["Cricket"], gender: "female", birthdate: "11/19/2020" },
+//         { id: 2, name: "kaushik", age: 21, email: "test2@gmail.com", address: "surat", hobby: ["Cricket", "Game"], gender: "male", birthdate: "12/19/2020" },
+//         { id: 3, name: "satish", age: 20, email: "test3@gmail.com", address: "ahemdabad", hobby: ["Cricket", "Game", "Travel"], gender: "male", birthdate: "13/19/2020" }
+//     ],
+//     update: []
+// }
 const initialState = {
-    posts: [
-        { id: 1, name: "abc", age: 21, email: "test1@gmail.com", address: "vadodra", hobby: ["Cricke"], gender: "female", birthdate: "10 / 19 / 2020" },
-        { id: 2, name: "pqr", age: 21, email: "test2@gmail.com", address: "surat", hobby: ["Cricke", "Game"], gender: "male", birthdate: "12 / 19 / 2020" }
-    ],
+    posts: JSON.parse(localStorage.getItem('testObject')),
     update: []
 }
-// const initialState = {
-//     posts: [JSON.parse(localStorage.getItem('testObject'))]
-// }
 const ManagerReducer = (state = initialState, action) => {
+    console.log(action);
     switch (action.type) {
         case DELETE_POST:
+            window.confirm('Are you sure delete the record ?')
             const newPost = state.posts.filter(post => post.id !== action.id)
+            localStorage.setItem('testObject', JSON.stringify(newPost))
+            toast.success("Delete Successfully", { position: toast.POSITION.TOP_CENTER }, { autoClose: 15000 })
             return {
                 posts: newPost,
             }
+
+        case UPDATE_DATA:
+            const modifiedData = state
+            modifiedData.posts.map((item, index) => {
+                if (item.id == action.post.id) {
+                    item.name = action.post.name
+                    item.address = action.post.address
+                    item.birthdate = action.post.birthdate
+                    item.email = action.post.email
+                    item.gender = action.post.gender
+                    item.hobby = action.post.hobby
+                }
+            })
+            localStorage.setItem('testObject', JSON.stringify(modifiedData.posts))
+            return {
+                posts: modifiedData.posts
+            }
+
         case UPDATE_POST:
             const updatePost = state.posts.filter(post => action.post.id === post.id)
             return {
                 posts: state.posts,
-                update: updatePost,
+                update: updatePost ? updatePost : state.posts.update,
             }
+
         case ADD_POST:
-            // initialState.posts = [action.post, ...state.posts]
-            // localStorage.setItem('testObject', JSON.stringify(initialState.posts))
-            // return initialState.posts
+            initialState.posts = [action.post, ...state.posts]
+            localStorage.setItem('testObject', JSON.stringify(initialState.posts))
             return {
-                posts: [action.post, ...state.posts],
+                posts: initialState.posts,
             }
         default:
             return state
