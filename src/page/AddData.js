@@ -11,9 +11,11 @@ import FormikControl from '../common/FormikControl';
 import ManagerList from './ManagerList';
 import '../css/login.css'
 import '../css/login.css'
+import { useHistory } from 'react-router-dom';
 
 const AddData = (props) => {
     const dispatch = useDispatch();
+    const history = useHistory();
     let { update } = useSelector(state => {
         return state
     })
@@ -40,6 +42,9 @@ const AddData = (props) => {
         { update.length === 0 ? dispatch(addManager(data)) : dispatch(updateData(data)) }
         toast.success("Add data Successfully", { position: toast.POSITION.TOP_CENTER }, { autoClose: 15000 })
         resetForm({})
+        history.push({
+            pathname: "/maganerlist",
+        })
     }
     const validationSchema = Yup.object({
         name: Yup.string().required('Required !'),
@@ -184,7 +189,6 @@ const AddData = (props) => {
                     }
                 </Formik>
             </div>
-            <ManagerList />
         </div>
     )
 }

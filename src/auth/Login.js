@@ -14,16 +14,15 @@ const Login = () => {
         email: 'vaman@gmail.com',
         password: 'zxcZXC1!'
     };
-    localStorage.setItem('login', JSON.stringify(data));
     const initialValues = {
         email: '',
         password: '',
     }
 
     const onSubmit = (value) => {
-        var retrievedObject = JSON.parse(localStorage.getItem('login'));
-        if (retrievedObject.email === value.email && retrievedObject.password === value.password) {
+        if (data.email === value.email && data.password === value.password) {
             toast.success("Login Successfull", { position: toast.POSITION.TOP_CENTER }, { autoClose: 15000 })
+            localStorage.setItem('token', JSON.stringify(data))
             setTimeout(function () {
                 history.push({
                     pathname: "/maganerlist",

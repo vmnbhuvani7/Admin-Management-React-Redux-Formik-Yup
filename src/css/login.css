@@ -82,3 +82,8 @@ h1 {
     display: flex;
     margin-top: auto;
 }
+
+a{
+    text-decoration:none !important;
+    color:white !important;
+}

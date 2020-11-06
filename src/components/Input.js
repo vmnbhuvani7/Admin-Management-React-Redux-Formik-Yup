@@ -6,7 +6,6 @@ import '../css/login.css'
 
 const Input = (props) => {
     const { label, name, value, ...rest } = props
-    console.log("rest value", value);
     return (
         <div className="m-3 ">
             <div className="row">

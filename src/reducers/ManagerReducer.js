@@ -15,15 +15,27 @@ const initialState = {
     update: []
 }
 const ManagerReducer = (state = initialState, action) => {
-    console.log(action);
     switch (action.type) {
-        case DELETE_POST:
-            window.confirm('Are you sure delete the record ?')
-            const newPost = state.posts.filter(post => post.id !== action.id)
-            localStorage.setItem('testObject', JSON.stringify(newPost))
-            toast.success("Delete Successfully", { position: toast.POSITION.TOP_CENTER }, { autoClose: 15000 })
+        case ADD_POST:
+            initialState.posts = [action.post, ...state.posts]
+            localStorage.setItem('testObject', JSON.stringify(initialState.posts))
             return {
-                posts: newPost,
+                posts: initialState.posts,
+            }
+
+        case DELETE_POST:
+            if (window.confirm('Are you sure delete the record ?')) {
+
+                const newPost = state.posts.filter(post => post.id !== action.id)
+                localStorage.setItem('testObject', JSON.stringify(newPost))
+                toast.success("Delete Successfully", { position: toast.POSITION.TOP_CENTER }, { autoClose: 15000 })
+                return {
+                    posts: newPost,
+                }
+            }else {
+                return {
+                    posts: state.posts
+                }
             }
 
         case UPDATE_DATA:
@@ -50,12 +62,7 @@ const ManagerReducer = (state = initialState, action) => {
                 update: updatePost ? updatePost : state.posts.update,
             }
 
-        case ADD_POST:
-            initialState.posts = [action.post, ...state.posts]
-            localStorage.setItem('testObject', JSON.stringify(initialState.posts))
-            return {
-                posts: initialState.posts,
-            }
+
         default:
             return state
     }

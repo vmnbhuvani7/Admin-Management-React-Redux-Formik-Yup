@@ -1,21 +1,21 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { deletePost, updatePost } from '../action/managerAction';
 
 const ManagerList = (props) => {
+    const dispatch = useDispatch();
+
     let { posts } = useSelector(state => {
         return state
     })
-
-    const dispatch = useDispatch();
     return (
         <>
             <div className="container mt-3">
-                <div className=" d-flex justify-content-end my-3"><button className="btn btn-success">
-                    Add Manager
-                    {/* <Link to="appdata">Add Manager</Link> */}
+                <div className=" d-flex justify-content-end mt-5 mb-3"><button className="btn btn-success" >
+                    <Link to="adddata">Add Manager</Link>
                 </button>
                 </div>
                 <div className="row">
@@ -45,7 +45,7 @@ const ManagerList = (props) => {
                                         <td>{post.gender}</td>
                                         <td>
                                             <button className="btn btn-danger mr-1" onClick={() => dispatch(deletePost(post.id))}>Delete</button>
-                                            <button className="btn btn-danger" onClick={() => dispatch(updatePost(post))}>Update</button>
+                                            <button className="btn btn-danger" onClick={() => dispatch(updatePost(post))}><Link to="adddata">Update</Link></button>
                                         </td>
                                     </tr>
                                 )}
