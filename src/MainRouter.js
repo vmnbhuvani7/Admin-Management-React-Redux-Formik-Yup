@@ -5,15 +5,18 @@ import Login from './auth/Login';
 import AddData from './page/AddData';
 import ManagerList from './page/ManagerList';
 import PrivteRouter from './auth/priveteRouter'
+import NotFound from './auth/NotFound';
+import { isAuthenticated } from './auth';
 
 const MainRouter = () => {
     return (
         <div>
             <BrowserRouter>
                 <Switch>
-                    <Route exact path="/" component={Login} />
+                    {isAuthenticated() ? <Route exact path="/" component={AddData} /> : <Route exact path="/" component={Login} />}
                     <PrivteRouter exact path="/adddata" component={AddData} ></PrivteRouter>
                     <PrivteRouter exact path="/maganerlist" component={ManagerList} ></PrivteRouter>
+                    <Route component={NotFound} />
                 </Switch>
             </BrowserRouter>
         </div>
